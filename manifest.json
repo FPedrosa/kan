@@ -1,0 +1,12 @@
+{
+	"name": "kanguru",
+	"version": "0.1",
+	"description": "Automatiza consumo",
+	
+	"permissions": [
+			"http://*/*",
+			"notifications"
+		],
+	
+	"background_page": "background.html"
+}
