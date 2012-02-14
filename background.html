@@ -13,6 +13,7 @@
 						if (req.readyState==4){
 							if (req.status==200){
 								var eventBox = req.responseText;
+								var time = 0;
 								
 								var MB = eventBox.slice(eventBox.lastIndexOf(" ", eventBox.indexOf("MB")), eventBox.indexOf("MB"));
 								if (MB.indexOf(",") != -1) MB = MB.slice(0, MB.indexOf(","));
@@ -20,17 +21,19 @@
 								console.log("req: ", MB);
 								
 								if (MB > 50) {
-									console.log("maior");
-									notif("", "Kanguru consumo", MB);
+									time = MB/4;
+									//console.log("maior");
+									
 								}
+								notif("", "Kanguru consumo", MB);
 								
-								if (MB <= 50) {
-									console.log("menor");
-									notif("", "Kanguru consumo", MB);
-									setMBdesponiveis();
-								}
-								console.log("TIME: ",MB/2*60*1000);
-								var t = setTimeout("getMBdisponiveis()", MB/2*60*1000)
+								//if (MB <= 50) {
+									//console.log("menor");
+									//notif("", "Kanguru consumo", MB);
+									//setMBdesponiveis();
+								//}
+								console.log("TIME: ",time);
+								var t = setTimeout("getMBdisponiveis()", time*60*1000)
 							}
 						}
 					}
@@ -60,7 +63,7 @@
 			}
 			
 			function notif(img, title, body){
-				a = webkitNotifications.createNotification(img, title, body);
+				var a = webkitNotifications.createNotification(img, title, body);
 				a.show();
 				setTimeout(function(){a.cancel();}, 10000);
 			}
