@@ -1,4 +1,5 @@
 {
+        "manifest_version": 2,
 	"name": "kanguru",
 	"version": "0.1",
 	"description": "Automatiza consumo",
@@ -8,5 +9,8 @@
 			"notifications"
 		],
 	
-	"background_page": "background.html"
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  }
 }
