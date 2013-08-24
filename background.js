@@ -8,35 +8,34 @@ function hhmmss(sec) {
     return h + ":" + m + ":" + s;
 }
 
-function getMBdisponiveis(){
+function getMBdisponiveis() {
     try {
         var req = new XMLHttpRequest();
         var url = "http://redirect.kanguru.pt/kanguru/RedirectAlertaConsumo.aspx?final_url=aHR0cDovL3JlZGlyZWN0Lmthbmd1cnUucHQvS2FuZ3VydS9SZWRpcmVjdENDU2VtU2FsZG8uYXNweA%3d%3d&msisdn=0BdTiF50t7hnu8l4Mlg9gr2OKGdwNBDq%2bO5y76ssepk%3d";
         req.open("GET", url, true);
-        req.onreadystatechange=function(){
-            if (req.readyState==4){
-                if (req.status==200){
-                    var eventBox = req.responseText;
-                    var time = 0;
-                    var mb = eventBox.slice(eventBox.lastIndexOf(" ", eventBox.indexOf("MB")), eventBox.indexOf("MB"));
+        req.onreadystatechange = function() {
+            if (req.readyState == 4 &&
+                req.status == 200) {
+                var eventBox = req.responseText;
+                var time = 0;
+                var mb = eventBox.slice(eventBox.lastIndexOf(" ", eventBox.indexOf("MB")), eventBox.indexOf("MB"));
 
-                    if (mb.indexOf(",") != -1)
-                        mb = mb.slice(0, mb.indexOf(","));
+                if (mb.indexOf(",") != -1)
+                    mb = mb.slice(0, mb.indexOf(","));
 
-                    if (mb > 60)
-                        time = mb/4;
-                    else {
-                        setMBdesponiveis();
-                        time = 1;
-                    }
-                    time *= 60;
-
-                    notif("", "Kanguru consumo", hhmmss(time));
-
-                    console.log("MB: ", mb);
-                    console.log("TIME: ",hhmmss(time));
-                    var t = setTimeout(function() { getMBdisponiveis() }, time*1000)
+                if (mb > 60)
+                    time = mb/4;
+                else {
+                    setMBdesponiveis();
+                    time = 1;
                 }
+                time *= 60;
+
+                notif("", "Kanguru consumo", hhmmss(time));
+
+                console.log("MB: ", mb);
+                console.log("TIME: ",hhmmss(time));
+                var t = setTimeout(function() { getMBdisponiveis() }, time*1000)
             }
         }
 
@@ -49,13 +48,12 @@ function getMBdisponiveis(){
 function setMBdesponiveis(){
     var req = new XMLHttpRequest();
     var url = "http://redirect.kanguru.pt/kanguru/KanguruCriaSessao.aspx?pacote=31&ecode=COM-000&enative=0&operacao=compraPacote&roaming=false";
-    req.open("GET", url, true); // false means do it synchronously
-    req.onreadystatechange = function(){
-        if (req.readyState == 4) {
-            if (req.status == 200) {
-                var eventBox = req.responseText;
-                console.log("req: ", eventBox);
-            }
+    req.open("GET", url, true);
+    req.onreadystatechange = function() {
+        if (req.readyState == 4 &&
+            req.status == 200) {
+            var eventBox = req.responseText;
+            console.log("req: ", eventBox);
         }
     }
 
