@@ -5,7 +5,7 @@
     "description": "Automatiza consumo",
 
     "permissions": [
-        "http://*/*",
+        "http://redirect.kanguru.pt/*",
         "notifications"
     ],
 
