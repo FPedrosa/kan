@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
     "name": "kanguru",
-    "version": "0.1",
-    "description": "Automatiza consumo",
+    "version": "0.0.0.1",
+    "description": "Optimus Kanguru, carregamentos automáticos para tarifário BASIC",
 
     "permissions": [
         "http://redirect.kanguru.pt/*",

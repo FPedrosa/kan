@@ -1,3 +1,13 @@
+// For todays date;
+Date.prototype.today = function () {
+    return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+}
+
+// For the time now
+Date.prototype.timeNow = function () {
+    return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+}
+
 function hhmmss(sec) {
     var h = Math.floor(sec / 60 / 60);
     sec = sec - h * 60 * 60;
@@ -19,22 +29,29 @@ function getMBdisponiveis() {
                 var eventBox = req.responseText;
                 var time = 0;
                 var mb = eventBox.slice(eventBox.lastIndexOf(" ", eventBox.indexOf("MB")), eventBox.indexOf("MB"));
+                var tmp = "";
 
                 if (mb.indexOf(",") != -1)
                     mb = mb.slice(0, mb.indexOf(","));
 
-                if (mb > 60)
-                    time = mb/4;
-                else {
-                    setMBdesponiveis();
+                if (mb > 70) {
                     time = 1;
+                    console.log("get");
+                    tmp = "get";
+                } else {
+                    setMBdesponiveis();
+                    time = 0;
+                    console.log("set");
+                    tmp="set";
                 }
                 time *= 60;
 
-                notif("", "Kanguru consumo", hhmmss(time));
+                //notif("", "Kanguru consumo" + tmp + "A" + mb + "A", hhmmss(time));
 
                 console.log("MB: ", mb);
-                console.log("TIME: ",hhmmss(time));
+                var newDate = new Date();
+                var datetime = "LastSync: " + newDate.today() + " @ " + newDate.timeNow();
+                console.log(datetime);
                 var t = setTimeout(function() { getMBdisponiveis() }, time*1000)
             }
         }
