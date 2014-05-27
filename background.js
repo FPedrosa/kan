@@ -1,11 +1,15 @@
 // For todays date;
 Date.prototype.today = function () {
-    return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+    return ((this.getDate() < 10)?"0":"") + this.getDate() + "/"
+    + (((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) + "/"
+    + this.getFullYear();
 }
 
 // For the time now
 Date.prototype.timeNow = function () {
-    return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+    return ((this.getHours() < 10)?"0":"") + this.getHours() +":"
+    + ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"
+    + ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
 }
 
 function hhmmss(sec) {
@@ -28,30 +32,31 @@ function getMBdisponiveis() {
                 req.status == 200) {
                 var eventBox = req.responseText;
                 var time = 0;
-                var mb = eventBox.slice(eventBox.lastIndexOf(" ", eventBox.indexOf("MB")), eventBox.indexOf("MB"));
                 var tmp = "";
+                var mb = "";
 
+                //console.log("CONTENT", eventBox);
+                mb = eventBox.slice(eventBox.indexOf("class=\"conteudo\""));
+                mb = mb.slice(mb.lastIndexOf(" ", mb.indexOf("MB")), mb.indexOf("MB"));
                 if (mb.indexOf(",") != -1)
                     mb = mb.slice(0, mb.indexOf(","));
 
                 if (mb > 70) {
                     time = 1;
-                    console.log("get");
                     tmp = "get";
                 } else {
                     setMBdesponiveis();
                     time = 0;
-                    console.log("set");
                     tmp="set";
                 }
-                time *= 60;
+                time *= 60 * (60 / 2); // half an hour
 
-                //notif("", "Kanguru consumo" + tmp + "A" + mb + "A", hhmmss(time));
-
-                console.log("MB: ", mb);
                 var newDate = new Date();
-                var datetime = "LastSync: " + newDate.today() + " @ " + newDate.timeNow();
-                console.log(datetime);
+                var datetime = "Last Update: " + newDate.today() + " @ " + newDate.timeNow();
+
+                console.log(tmp, mb, datetime);
+                notif("" ,tmp + mb, datetime);
+
                 var t = setTimeout(function() { getMBdisponiveis() }, time*1000)
             }
         }
@@ -78,9 +83,8 @@ function setMBdesponiveis(){
 }
 
 function notif(img, title, body){
-    var a = webkitNotifications.createNotification(img, title, body);
-    a.show();
-    setTimeout(function(){a.cancel();}, 10000);
+    var a = new Notification(title, {body: body});
+    setTimeout(function(){a.close();}, 10000);
 }
 
 getMBdisponiveis();
